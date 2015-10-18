@@ -1,5 +1,5 @@
 Nonterminals list elems elem key_elem doc tags tg tg_first div_attr div_attrs.
-Terminals '[' ']' ',' int atom key tag id class.
+Terminals '[' ']' ',' int atom key tag id class tag_content.
 Rootsymbol doc.
 
 doc ->  tags          : '$1'.
@@ -35,6 +35,9 @@ tg_first -> class  : 'Elixir.Helpers':gen_div('$1').
 
 div_attr -> id     : 'Elixir.Helpers':div_attr('$1').
 div_attr -> class  : 'Elixir.Helpers':div_attr('$1').
+div_attr -> tag_content  : 'Elixir.Helpers':div_attr('$1').
+
+
 
 Erlang code.
 

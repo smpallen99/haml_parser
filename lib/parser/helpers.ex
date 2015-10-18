@@ -22,9 +22,16 @@ defmodule Helpers do
   end
   def gen_div(first, second) do
     Logger.debug "gen_div: '#{inspect first}', '#{inspect second}'"
-    attrs = build_attrs(first ++ second)
-    '<div #{attrs}></div>'
-     
+
+    attrs = first ++ second
+
+    {attrs, content} = case Keyword.get(attrs, :tag_content) do
+      nil -> {attrs, ""}
+      value -> {Keyword.delete(attrs, :tag_content), value}
+    end
+    attrs = build_attrs(attrs)
+
+    '<div #{attrs}>#{content}</div>'
   end
 
   def div_attr({token, _line, tag}) do

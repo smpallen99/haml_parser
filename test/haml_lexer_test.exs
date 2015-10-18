@@ -18,5 +18,11 @@ defmodule Parser.HamlLexer.Test do
     {:ok, tokens, _} = source |> String.to_char_list |> :haml_lexer.string
     assert [{:tag, 1, 'select'}] == tokens
   end
+
+  test "#id.cls Some content" do
+    source = "#id.cls Some content"
+    {:ok, tokens, _} = source |> String.to_char_list |> :haml_lexer.string
+    assert [{:id, 1, 'id'}, {:tag_content, 1, 'Some content'}, {:class, 1, 'cls'}] == tokens
+  end
   
 end
