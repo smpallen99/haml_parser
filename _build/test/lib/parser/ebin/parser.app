@@ -1,0 +1,9 @@
+{application,parser,
+             [{registered,[]},
+              {description,"parser"},
+              {applications,[kernel,stdlib,elixir,logger]},
+              {compilers,[yecc,leex,erlang,elixir,app]},
+              {mod,{'Elixir.Parser',[]}},
+              {vsn,"0.0.1"},
+              {modules,['Elixir.Helpers','Elixir.Parser',haml_lexer,
+                        haml_parser]}]}.
