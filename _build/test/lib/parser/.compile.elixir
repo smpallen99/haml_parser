@@ -1,2 +1,2 @@
 _build/test/lib/parser/ebin/Elixir.Parser.beam	Elixir.Parser	lib/parser.ex	Elixir.Application	Elixir.Kernel	Elixir.Module	Elixir.Parser.Supervisor	Elixir.Supervisor	Elixir.Supervisor.Spec	Elixir
-_build/test/lib/parser/ebin/Elixir.Helpers.beam	Elixir.Helpers	lib/parser/helpers.ex	Elixir.Enum	Elixir.Kernel	Elixir.List	Elixir.Regex	Elixir.String	Elixir.String.Chars	erlang	Elixir
+_build/test/lib/parser/ebin/Elixir.Helpers.beam	Elixir.Helpers	lib/parser/helpers.ex	Elixir.Enum	Elixir.Kernel	Elixir.List	Elixir.Logger	Elixir.Map	Elixir.Regex	Elixir.String	Elixir.String.Chars	erlang	maps	Elixir

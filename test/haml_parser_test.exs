@@ -16,6 +16,18 @@ defmodule HamlParser.Test do
   end
   test "parses [{:id, 1, 'my-id}, {:class, 1, 'my-class'}]" do
     {:ok, result} = :haml_parser.parse([{:id, 1, 'my-id'}, {:class, 1, 'my-class'}])
-    assert '<div id="my-id" class="my-class"></div>' == result
+    result = List.to_string result
+
+    assert String.contains?(result, ~s(id="my-id"))
+    assert String.contains?(result, ~s(class="my-class))
+  end
+
+  test "parses [{:id, 1, 'my-id}, {:class, 1, 'my-class'}, {:class, 1, 'other'}]" do
+    attrs = [{:id, 1, 'my-id'}, {:class, 1, 'my-class'}, {:class, 1, 'other'}]
+    {:ok, result} = :haml_parser.parse(attrs)
+    result = List.to_string result
+
+    assert String.contains?(result, ~s(id="my-id"))
+    assert String.contains?(result, ~s(class="my-class other"))
   end
 end
