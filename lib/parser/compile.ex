@@ -31,7 +31,12 @@ defmodule Parser.Compile do
   end
 
   def attributes(%{attributes: nil}), do: ""
-  def attributes(%{attributes: attrs}), do: " " <> attrs
+  def attributes(%{attributes: attrs}) when is_binary(attrs), do: " " <> attrs
+  def attributes(%{attributes: attrs}) when is_list(attrs) do 
+    Enum.reduce(attrs, "", fn({k,v}, acc) -> 
+      acc <> " " <> Atom.to_string(k) <> "=" <> "\"" <> v <> "\""
+    end)
+  end
   def attributes(_), do: ""
 
 

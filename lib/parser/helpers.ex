@@ -11,6 +11,16 @@ defmodule Helpers do
     |> Enum.map(&(String.to_char_list &1))
   end
 
+  def gen_params([tag], params) do
+    args = []
+    args = Enum.reduce params, [], fn({name, value}, acc) -> 
+      name = Enum.reduce(name, "", &(if &1, do: &2 <> "#{&1}", else: &2))
+      |> String.to_atom
+      [{name, _to_string(value)}|acc]
+    end
+    # Logger.warn "tag: #{inspect tag}, params: |#{inspect params}|, args: #{inspect args}"
+    [update_in(tag, [:attributes], &(if &1, do: &1 ++ args, else: args))]
+  end
   def gen_tag({_token, line, tag}) do
     [%{tag: "#{tag}", line_number: line, indent: 0}]
   end
@@ -62,6 +72,10 @@ defmodule Helpers do
   #   Logger.debug "add_indent indent: #{inspect indent}, tag: #{inspect tag}"
   #   Enum.into(indent, tag)
   # end
+
+  def get_enclosed({:quote, _line, item}) do
+    Enum.filter item, &(&1 != ?")
+  end
 
   def render_page(page) do
     # Logger.debug "page: #{inspect page}"

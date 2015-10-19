@@ -24,4 +24,19 @@ defmodule HamlParser.Integration.Test do
     assert String.contains?(result, ~s(class="test other"))
     assert String.contains?(result, ~s(>Some Text</div>))
   end
+
+  @haml """
+%span(ng-class="testing you" id="test")
+%span(ng-class="ou" id="tt")
+
+  """
+
+  test "build simple file" do
+    result = @haml
+    |> Parser.Tokenizer.tokenize
+    |> Parser.Parser.parse
+    |> Parser.Compile.build_html
+
+    assert "<span id=\"test\" ng-class=\"testing you\">\n</span>\n<span id=\"tt\" ng-class=\"ou\">\n</span>\n" == result
+  end
 end

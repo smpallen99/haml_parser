@@ -5,14 +5,17 @@ L          = [a-z]
 U          = [A-Z]
 A          = ({U}|{L}|{INT}|_)
 ATOM       = :{A}
-WS         = [\s\t\n\r]
+WS         = [\s\t]
 TAG        = [0-9a-zA-Z_\-]+
+NL         = [\r\n]
 
 Rules.
 
 {INT}         : {token, {int,  TokenLine, list_to_integer(TokenChars)}}.
 {ATOM}        : {token, {atom, TokenLine, to_atom(TokenChars)}}.
 [a-z_]+:      : {token, {key,  TokenLine, list_to_atom(lists:sublist(TokenChars, 1, TokenLen - 1))}}.
+"[^"]*?"         : {token, {quote, TokenLine, TokenChars}}.
+'.*?'         : {token, {squote, TokenLine, TokenChars}}.
 \[            : {token, {'[',  TokenLine}}.
 \]            : {token, {']',  TokenLine}}.
 \(            : {token, {'(',  TokenLine}}.
@@ -20,6 +23,10 @@ Rules.
 \{            : {token, {'{',  TokenLine}}.
 \}            : {token, {'}',  TokenLine}}.
 ,             : {token, {',',  TokenLine}}.
+\.            : {token, {'.',  TokenLine}}.
+-             : {token, {'-',  TokenLine}}.
+_             : {token, {'_',  TokenLine}}.
+=             : {token, {'=',  TokenLine}}.
 {WS}*         : {token, {ws, TokenLine, TokenChars}}.
 \.{TAG}{WS}.* : [Tag, Content] = 'Elixir.Helpers':extract_first(TokenChars),
                   {token, {tag_content, TokenLine, Content}, Tag}.
@@ -31,9 +38,11 @@ Rules.
                      true -> {Atom,TokenLine};
                      false -> {atom,TokenLine,Atom}
                 end}.
-.             : {token, {'.',  TokenLine}}.
+
 ->            : {token,{'->',TokenLine}}.
 <-            : {token,{'<-',TokenLine}}.
+{NL}          : {end_token, {nl, TokenLine}}.
+
 
 Erlang code.
 

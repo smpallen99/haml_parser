@@ -17,7 +17,7 @@ defmodule ParserTest do
   end
 
   test "parses single indentation" do
-    tokens = [
+    _tokens = [
       [{:tag, 1, 'span'}], 
       [{:ws, 2, '  '}, {:tag_content, 2, 'Some Content'}, {:id, 2, 'id'}],
     ]
@@ -25,7 +25,7 @@ defmodule ParserTest do
   end
 
   test "parses multiple indentation" do
-    tokens = [
+    _tokens = [
       [{:tag, 1, 'span'}], 
       [{:ws, 2, '  '}, {:tag, 2, 'select'}],
       [{:ws, 3, '    '}, {:tag_content, 3, 'Some Content'}, {:id, 3, 'id'}],
@@ -33,7 +33,7 @@ defmodule ParserTest do
     #assert ~s(test) == Parser.Parser.parse(tokens)
   end
   test "parses complex indentation" do
-    tokens = [
+    _tokens = [
       [{:tag, 1, 'span'}], 
       [{:ws, 2, '  '}, {:tag, 2, 'select'}],
       [{:ws, 3, '    '}, {:tag, 3, 'option'}],
@@ -41,11 +41,6 @@ defmodule ParserTest do
     ]
     #assert ~s(test) == Parser.Parser.parse(tokens)
   end
-  # %div
-  #   %div
-  #     %div
-  #     %div
-  #   %div
   test "parses more complex indentation" do
     tokens = [
       [{:tag, 1, 'span'}], 
@@ -64,4 +59,12 @@ defmodule ParserTest do
     assert expected == Parser.Parser.parse(tokens)
   end
 
+  test "bracket type attributes" do
+    # ~s(%span(ng-class="cls" id="id-123")
+    tokens = [[{:tag, 1, 'span'}, {:"(", 1}, {:atom, 1, :ng}, {:-, 1}, 
+      {:atom, 1, :class}, {:=, 1}, {:quote, 1, '"cls"'}, {:ws, 1, ' '}, 
+      {:atom, 1, :id}, {:=, 1}, {:quote, 1, '"id-123"'}, {:")", 1}]]
+    expected = [%{attributes: [id: "id-123", "ng-class": "cls"], indent: 0, line_number: 1, tag: "span"}]
+    assert expected == Parser.Parser.parse(tokens)
+  end
 end
