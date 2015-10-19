@@ -1,9 +1,12 @@
-Nonterminals list elems elem key_elem doc tags tg tg_first div_attr div_attrs leading_ws terms term param_list param_item pterm pterms params.
-Terminals '[' ']' ',' int atom key tag id class tag_content ws '(' ')' '{' '}' '-' '=' quote.
+Nonterminals list elems elem key_elem doc tags tg tg_first div_attr div_attrs 
+             leading_ws terms term param_list param_item pterm pterms params
+             key_list key_term key_set.
+
+Terminals '[' ']' ',' int atom key dkey tag id class tag_content ws '(' ')' '{' '}' '-' '=' quote.
+
 Rootsymbol doc.
 
 doc ->  tags          : 'Elixir.Helpers':render_page('$1').
-
 
 tags -> tg params : 'Elixir.Helpers':gen_params('$1', '$2').
 tags -> tags tg params : '$1' ++  'Elixir.Helpers':gen_params('$2', '$3').
@@ -30,13 +33,21 @@ terms -> term                : ['$1'].
 terms -> term terms          : ['$1' | '$2'].
 
 params -> '(' param_list ')' : '$2'.
+params -> '{' key_list '}'      : '$2'.
+
+key_list -> key_set           : ['$1'].
+key_list -> ws key_set        : ['$2'].
+key_list ->  key_set ',' key_list : ['$1'|'$3'].
+
+key_set -> key_term  elem     : {'$1', '$2'}.
 
 pterms -> pterm              : ['$1'].
 pterms -> pterm pterms       : ['$1' | '$2'].
 
-elem -> int  : 'Elixir.Helpers':extract_token('$1').
-elem -> atom : 'Elixir.Helpers':extract_token('$1').
-elem -> key :  'Elixir.Helpers':extract_token('$1').
+elem -> int                  : 'Elixir.Helpers':extract_token('$1').
+elem -> atom                 : 'Elixir.Helpers':extract_token('$1').
+elem -> key                  : 'Elixir.Helpers':extract_token('$1').
+elem -> quote                : 'Elixir.Helpers':get_enclosed('$1').
 
 elem -> list : '$1'.
 
@@ -59,9 +70,10 @@ term -> '-'              : '-'.
 term -> ','              : ','.
 term -> int              : 'Elixir.Helpers':extract_token('$1').
 term -> atom             : 'Elixir.Helpers':extract_token('$1').
-term -> key              : 'Elixir.Helpers':extract_token('$1').
 term -> quote            : 'Elixir.Helpers':get_enclosed('$1').
 term -> ws               : 'Elixir.Helpers':extract_token('$1').
+
+key_term -> dkey          : 'Elixir.Helpers':extract_token('$1').
 
 pterm -> '-'              : '-'.
 pterm -> ','              : ','.

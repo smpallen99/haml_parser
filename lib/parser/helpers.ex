@@ -12,10 +12,14 @@ defmodule Helpers do
   end
 
   def gen_params([tag], params) do
-    args = []
+    # Logger.warn "tag: #{inspect tag}, params: |#{inspect params}|"
     args = Enum.reduce params, [], fn({name, value}, acc) -> 
-      name = Enum.reduce(name, "", &(if &1, do: &2 <> "#{&1}", else: &2))
-      |> String.to_atom
+      name = case name do
+        name when is_atom(name) -> name
+        name when is_list(name) -> 
+          Enum.reduce(name, "", &(if &1, do: &2 <> "#{&1}", else: &2))
+          |> String.to_atom
+      end
       [{name, _to_string(value)}|acc]
     end
     # Logger.warn "tag: #{inspect tag}, params: |#{inspect params}|, args: #{inspect args}"

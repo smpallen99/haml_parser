@@ -67,4 +67,24 @@ defmodule ParserTest do
     expected = [%{attributes: [id: "id-123", "ng-class": "cls"], indent: 0, line_number: 1, tag: "span"}]
     assert expected == Parser.Parser.parse(tokens)
   end
+
+  test "brace type attributes" do
+    # ~s(%span{ng-class: "cls", id: "id-123"})
+    tokens = [
+      # [{:tag, 1, 'span'}, {:"{", 1}, {:atom, 1, :ng}, {:-, 1}, {:key, 1, :class}, 
+      [{:tag, 1, 'span'}, {:"{", 1}, {:dkey, 1, :class}, 
+       {:quote, 1, '"cls"'}, {:",", 1}, {:ws, 1, ' '}, {:dkey, 1, :id}, 
+       {:quote, 1, '"id-123"'}, {:"}", 1}]
+     ]
+    expected = [%{attributes: [id: "id-123", class: "cls"], indent: 0, line_number: 1, tag: "span"}]
+    assert expected == Parser.Parser.parse(tokens)
+  end
+  test "brace type attributes dashed names" do
+    # ~s(%span{ng-class: "cls", id: "id-123"})
+    tokens = [[{:tag, 1, 'span'}, {:"{", 1}, {:dkey, 1, :"ng-class"}, 
+      {:quote, 1, '"cls"'}, {:",", 1}, {:ws, 1, ' '}, 
+      {:dkey, 1, :id}, {:quote, 1, '"id-123"'}, {:"}", 1}]]
+    expected = [%{attributes: [id: "id-123", "ng-class": "cls"], indent: 0, line_number: 1, tag: "span"}]
+    assert expected == Parser.Parser.parse(tokens)
+  end
 end

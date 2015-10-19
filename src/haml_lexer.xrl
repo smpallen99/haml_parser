@@ -8,12 +8,15 @@ ATOM       = :{A}
 WS         = [\s\t]
 TAG        = [0-9a-zA-Z_\-]+
 NL         = [\r\n]
+KEY        = [a-zA-Z0-9_]+:
 
 Rules.
 
 {INT}         : {token, {int,  TokenLine, list_to_integer(TokenChars)}}.
 {ATOM}        : {token, {atom, TokenLine, to_atom(TokenChars)}}.
-[a-z_]+:      : {token, {key,  TokenLine, list_to_atom(lists:sublist(TokenChars, 1, TokenLen - 1))}}.
+{KEY}         : {token, {key,  TokenLine, list_to_atom(lists:sublist(TokenChars, 1, TokenLen - 1))}}.
+{A}+[\-]?{KEY}{WS}   : {token, {dkey,  TokenLine, list_to_atom(lists:sublist(TokenChars, 1, TokenLen - 2))}}.
+
 "[^"]*?"         : {token, {quote, TokenLine, TokenChars}}.
 '.*?'         : {token, {squote, TokenLine, TokenChars}}.
 \[            : {token, {'[',  TokenLine}}.

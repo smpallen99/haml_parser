@@ -37,5 +37,20 @@ defmodule Parser.Tokenizer.Test do
       {:atom, 1, :three}, {:=, 1}, {:quote, 1, '"four"'}]]
     assert expected == tokenize(~s(one="two" three="four"))
   end
+
+  test "braces params" do
+    expected = [[{:tag, 1, 'span'}, {:"{", 1}, {:dkey, 1, :"ng-class"}, {:quote, 1, '"cls"'}, {:",", 1}, {:ws, 1, ' '}, {:dkey, 1, :id}, {:quote, 1, '"idd"'}, {:"}", 1}]]
+    assert expected == tokenize(~s(%span{ng-class: "cls", id: "idd"}))
+  end
+  test "braces params dashed names" do
+    expected = [[{:tag, 1, 'span'}, {:"{", 1}, {:dkey, 1, :"ng-class"}, 
+      {:quote, 1, '"cls"'}, {:",", 1}, {:ws, 1, ' '}, 
+      {:dkey, 1, :id}, {:quote, 1, '"id-123"'}, {:"}", 1}]]
+    assert expected == tokenize(~s(%span{ng-class: "cls", id: "id-123"}))
+  end
+
+  test "dkey" do
+    assert [[{:dkey, 1, :"key-1"}]] == tokenize("key-1: ")
+  end
   
 end
