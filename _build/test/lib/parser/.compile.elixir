@@ -1,2 +1,5 @@
-/Users/spallen/myprojects/elixir/spike/haml_parser/_build/test/lib/parser/ebin/Elixir.Parser.beam	Elixir.Parser	lib/parser.ex	Elixir.Application	Elixir.Kernel	Elixir.Module	Elixir.Parser.Supervisor	Elixir.Supervisor	Elixir.Supervisor.Spec	Elixir
+_build/test/lib/parser/ebin/Elixir.Parser.beam	Elixir.Parser	lib/parser.ex	Elixir.Application	Elixir.Kernel	Elixir.Module	Elixir.Parser.Supervisor	Elixir.Supervisor	Elixir.Supervisor.Spec	Elixir
+_build/test/lib/parser/ebin/Elixir.Parser.Parser.beam	Elixir.Parser.Parser	lib/parser/parser.ex	Elixir.List	Elixir.Logger	haml_parser	Elixir
+_build/test/lib/parser/ebin/Elixir.Parser.Tokenizer.beam	Elixir.Parser.Tokenizer	lib/parser/tokenizer.ex	Elixir.Enum	Elixir.Regex	Elixir.String	erlang	haml_lexer	Elixir
+_build/test/lib/parser/ebin/Elixir.Parser.Compile.beam	Elixir.Parser.Compile	lib/parser/compile.ex	Elixir.Access	Elixir.Kernel	Elixir.Module	Elixir.String.Chars	erlang	Elixir
 _build/test/lib/parser/ebin/Elixir.Helpers.beam	Elixir.Helpers	lib/parser/helpers.ex	Elixir.Enum	Elixir.Kernel	Elixir.Keyword	Elixir.List	Elixir.Logger	Elixir.Map	Elixir.Regex	Elixir.String	Elixir.String.Chars	erlang	maps	Elixir
